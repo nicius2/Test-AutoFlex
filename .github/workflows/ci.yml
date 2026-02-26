@@ -1,0 +1,53 @@
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "backend/**"
+      - ".github/workflows/ci.yml"
+
+jobs:
+  unit-tests:
+    name: Build & Unit Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Java 21
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # Build & run all tests
+      - name: Run all tests
+        run: ./mvnw verify --no-transfer-progress
+
+      # Upload surefire XML reports as artifact
+      - name: Upload test reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: surefire-reports
+          path: backend/target/surefire-reports/*.xml
+          retention-days: 7
+
+      # Publish test report in the PR / checks tab
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: JUnit Tests
+          path: backend/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
