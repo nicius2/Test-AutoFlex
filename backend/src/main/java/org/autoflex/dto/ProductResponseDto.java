@@ -1,7 +1,8 @@
 package org.autoflex.dto;
 
 public record ProductResponseDto(
+        String id,
         String name,
-        String entityName, Integer value
+        Integer value
 ) {
 }
