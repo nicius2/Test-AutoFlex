@@ -29,7 +29,6 @@ class ProductServicesTest {
     @InjectMock
     ProductMapper mapper;
 
-
     private ProductEntity buildEntity(String id, String name, Integer value) {
         ProductEntity entity = new ProductEntity();
         entity.setId(id);
@@ -57,20 +56,20 @@ class ProductServicesTest {
     @Test
     @DisplayName("create: should persist and return the created product")
     void create_ShouldReturnCreatedProduct() {
-        ProductRequestDto  request  = buildRequest("Steel Bolt", 50);
-        ProductEntity      entity   = buildEntity("abc-123", "Steel Bolt", 50);
+        ProductRequestDto request = buildRequest("Steel Bolt", 50);
+        ProductEntity entity = Mockito.spy(buildEntity("abc-123", "Steel Bolt", 50));
         ProductResponseDto response = buildResponse("abc-123", "Steel Bolt", 50);
 
         when(mapper.toEntity(request)).thenReturn(entity);
-        doNothing().when(entity).persist();          // persist() is mocked via PanacheMock
+        doNothing().when(entity).persist(); // persist() is mocked via PanacheMock
         when(mapper.toResponse(entity)).thenReturn(response);
 
         ProductResponseDto result = productServices.create(request);
 
         assertNotNull(result);
-        assertEquals("abc-123",    result.id());
+        assertEquals("abc-123", result.id());
         assertEquals("Steel Bolt", result.name());
-        assertEquals(50,           result.value());
+        assertEquals(50, result.value());
 
         verify(mapper).toEntity(request);
         verify(mapper).toResponse(entity);
@@ -81,20 +80,20 @@ class ProductServicesTest {
     @Test
     @DisplayName("findAll: should return a list with all products")
     void findAll_ShouldReturnAllProducts() {
-        ProductEntity e1 = buildEntity("id-1", "Gear",   100);
+        ProductEntity e1 = buildEntity("id-1", "Gear", 100);
         ProductEntity e2 = buildEntity("id-2", "Spring", 200);
 
         PanacheMock.doReturn(List.of(e1, e2))
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.listAll();
 
-        when(mapper.toResponse(e1)).thenReturn(buildResponse("id-1", "Gear",   100));
+        when(mapper.toResponse(e1)).thenReturn(buildResponse("id-1", "Gear", 100));
         when(mapper.toResponse(e2)).thenReturn(buildResponse("id-2", "Spring", 200));
 
         List<ProductResponseDto> result = productServices.findAll();
 
         assertEquals(2, result.size());
-        assertEquals("Gear",   result.get(0).name());
+        assertEquals("Gear", result.get(0).name());
         assertEquals("Spring", result.get(1).name());
     }
 
@@ -102,7 +101,7 @@ class ProductServicesTest {
     @DisplayName("findAll: should return empty list when no products exist")
     void findAll_ShouldReturnEmptyList() {
         PanacheMock.doReturn(List.of())
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.listAll();
 
         List<ProductResponseDto> result = productServices.findAll();
@@ -118,7 +117,7 @@ class ProductServicesTest {
         ProductEntity entity = buildEntity("id-1", "Gear", 100);
 
         PanacheMock.doReturn(entity)
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.findById("id-1");
 
         when(mapper.toResponse(entity)).thenReturn(buildResponse("id-1", "Gear", 100));
@@ -134,7 +133,7 @@ class ProductServicesTest {
     @DisplayName("findById: should throw NotFoundException when product does not exist")
     void findById_ShouldThrowNotFound_WhenMissing() {
         PanacheMock.doReturn(null)
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.findById("missing-id");
 
         assertThrows(NotFoundException.class,
@@ -149,18 +148,18 @@ class ProductServicesTest {
         ProductEntity entity = buildEntity("id-1", "Old Name", 10);
 
         PanacheMock.doReturn(entity)
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.findById("id-1");
 
-        ProductRequestDto  request  = buildRequest("New Name", 99);
+        ProductRequestDto request = buildRequest("New Name", 99);
         ProductResponseDto response = buildResponse("id-1", "New Name", 99);
 
         when(mapper.toResponse(any())).thenReturn(response);
 
         ProductResponseDto result = productServices.update("id-1", request);
 
-        assertEquals("New Name", entity.getName());  // field was mutated
-        assertEquals(99,         entity.getValue());
+        assertEquals("New Name", entity.getName()); // field was mutated
+        assertEquals(99, entity.getValue());
         assertEquals("New Name", result.name());
     }
 
@@ -168,7 +167,7 @@ class ProductServicesTest {
     @DisplayName("update: should throw NotFoundException when product does not exist")
     void update_ShouldThrowNotFound_WhenMissing() {
         PanacheMock.doReturn(null)
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.findById("missing-id");
 
         assertThrows(NotFoundException.class,
@@ -183,7 +182,7 @@ class ProductServicesTest {
         ProductEntity entity = Mockito.spy(buildEntity("id-1", "Gear", 100));
 
         PanacheMock.doReturn(entity)
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.findById("id-1");
 
         doNothing().when(entity).delete();
@@ -196,7 +195,7 @@ class ProductServicesTest {
     @DisplayName("delete: should throw NotFoundException when product does not exist")
     void delete_ShouldThrowNotFound_WhenMissing() {
         PanacheMock.doReturn(null)
-                   .when(ProductEntity.class);
+                .when(ProductEntity.class);
         ProductEntity.findById("missing-id");
 
         assertThrows(NotFoundException.class,

@@ -11,6 +11,9 @@ jobs:
   unit-tests:
     name: Build & Unit Tests
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: read
 
     defaults:
       run:

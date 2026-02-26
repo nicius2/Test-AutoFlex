@@ -186,6 +186,7 @@ class RawMaterialControllerIT {
                     .get("/raw-materials/production-suggestion")
                     .then()
                     .statusCode(200)
-                    .body("$", instanceOf(java.util.List.class));
+                    .body("suggestions", instanceOf(java.util.List.class))
+                    .body("grandTotalValue", notNullValue());
      }
 }

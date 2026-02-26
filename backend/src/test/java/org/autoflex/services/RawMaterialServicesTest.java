@@ -58,7 +58,7 @@ class RawMaterialServicesTest {
      @DisplayName("create: should persist and return the created raw material")
      void create_ShouldReturnCreatedRawMaterial() {
           RawMaterialRequestDto request = buildRequest("Steel", 100);
-          RawMaterialEntity entity = buildEntity("rm-1", "Steel", 100);
+          RawMaterialEntity entity = Mockito.spy(buildEntity("rm-1", "Steel", 100));
           RawMaterialResponseDto response = buildResponse("rm-1", "Steel", 100);
 
           when(mapper.toEntity(request)).thenReturn(entity);
