@@ -1,9 +1,3 @@
-CREATE TABLE products (
-    id VARCHAR(255 CHAR) PRIMARY KEY,
-    name VARCHAR(150 CHAR) NOT NULL,
-    value NUMBER(10) NOT NULL
-);
-
 CREATE TABLE raw_materials (
     id VARCHAR(36 CHAR) PRIMARY KEY,
     name VARCHAR(150 CHAR) NOT NULL,
