@@ -1,23 +1,28 @@
+/* Radix UI theme tokens and base styles — must come FIRST */
 @import "@radix-ui/themes/styles.css";
 
+/* Tailwind v4 — import utilities layer only to avoid Preflight conflicting with Radix reset */
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+
+/* Global base */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html,
 body,
 #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  font-family: var(--default-font-family);
+  font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif);
   background-color: var(--gray-1);
   color: var(--gray-12);
   -webkit-font-smoothing: antialiased;
 }
-
