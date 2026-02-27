@@ -1,7 +1,11 @@
+import { RouterProvider } from "react-router";
+import { router } from "./routes";
+import { Theme } from "@radix-ui/themes";
+
 export function App() {
   return (
-    <div className="App">
-      <h1>Welcome to the AutoFlex</h1>
-    </div>
-  );
+    <Theme accentColor="indigo" grayColor="slate" radius="medium" scaling="100%">
+      <RouterProvider router={router} />
+    </Theme>
+  )
 }
