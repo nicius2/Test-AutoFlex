@@ -7,6 +7,7 @@ import jakarta.ws.rs.NotFoundException;
 import org.autoflex.dto.ProductRequestDto;
 import org.autoflex.dto.ProductResponseDto;
 import org.autoflex.entities.ProductEntity;
+import org.autoflex.entities.ProductMaterialEntity;
 import org.autoflex.mapper.ProductMapper;
 
 import java.util.List;
@@ -52,10 +53,12 @@ public class ProductServices {
 
     @Transactional
     public void delete(String id) {
-        ProductEntity entity = ProductEntity.findById(id);
-        if (entity == null) {
+        ProductEntity product = ProductEntity.findById(id);
+        if (product == null) {
             throw new NotFoundException("Product not found with id: " + id);
         }
-        entity.delete();
+
+        ProductMaterialEntity.delete("id.productId", id);
+        product.delete();
     }
 }

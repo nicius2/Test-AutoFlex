@@ -16,7 +16,7 @@ import lombok.Setter;
 public class ProductMaterialEntity extends PanacheEntityBase {
 
     @EmbeddedId
-    private ProductMaterialId id = new ProductMaterialId();
+    private ProductMaterialId id;
 
     @ManyToOne
     @MapsId("productId")
