@@ -8,7 +8,7 @@ import {
 } from "@radix-ui/react-icons";
 import userImage from "../assets/perfil.png";
 
-// ─── Brand Icon ──────────────────────────────────────────────────────────────
+// Brand Icon
 
 function CarIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
