@@ -45,14 +45,13 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Start Quarkus backend (prod profile → PostgreSQL)
+      - name: Start Quarkus backend (ci profile → PostgreSQL)
         working-directory: backend
         env:
           DB_URL: jdbc:postgresql://localhost:5432/autoflex
           DB_USERNAME: autoflex
           DB_PASSWORD: autoflex
-          QUARKUS_PROFILE: prod
-        run: ./mvnw quarkus:dev -Dquarkus.profile=prod -Dquarkus.http.port=8080 &
+        run: ./mvnw quarkus:run -Dquarkus.profile=ci -Dquarkus.http.port=8080 &
 
       - name: Wait for backend to be ready
         run: |
