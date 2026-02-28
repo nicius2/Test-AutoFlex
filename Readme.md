@@ -66,5 +66,69 @@ By using a composite primary key consisting of both foreign keys, the database i
 
 To run this project locally, ensure you have the following installed:
 *   Java Development Kit (JDK) 21+
-*   Node.js & npm/pnpm
-*   A running instance of Oracle Database (or edit the `application.properties` to switch to PostgreSQL/MySQL/H2)
+*   Node.js & Yarn
+*   Docker (to run the Oracle database via `docker compose`)
+
+---
+
+## Database Strategy per Environment
+
+The backend uses **Quarkus profiles** to switch between databases automatically. No code changes are needed — only the active profile and the corresponding environment variables determine which database is used.
+
+| Environment | Profile | Database | How it starts |
+|---|---|---|---|
+| **Local dev** | `dev` | Oracle XE 21c | `docker compose up -d` inside `backend/` |
+| **CI (GitHub Actions)** | `ci` | PostgreSQL 16 | Service container spun up automatically by the workflow |
+| **Production (Railway)** | `prod` | PostgreSQL (Railway) | Managed cloud instance, credentials injected via Railway env vars |
+
+### Local Development (`dev` profile)
+
+The `dev` profile is active by default when you run `./mvnw quarkus:dev`. It connects to an Oracle XE instance started via Docker Compose.
+
+Required `.env` inside `backend/`:
+```env
+ORACLE_PASSWORD=your_oracle_password
+ORACLE_PORT=1521
+```
+
+Start the database first, then the backend:
+```bash
+cd backend
+docker compose up -d        # starts Oracle XE
+./mvnw quarkus:dev          # starts Quarkus (dev profile)
+```
+
+### CI / E2E Tests (`ci` profile)
+
+When the `frontend-e2e` GitHub Actions workflow runs, it spins up a **PostgreSQL 16** service container and passes the connection details as environment variables. The `ci` profile reads them directly:
+
+```
+DB_URL      → jdbc:postgresql://localhost:5432/autoflex
+DB_USERNAME → autoflex
+DB_PASSWORD → autoflex
+```
+
+No manual setup is needed — the workflow handles everything.
+
+### Production / Railway (`prod` profile)
+
+The `prod` profile connects to the managed PostgreSQL instance on Railway using TCP Proxy credentials. These must be set as environment variables in the Railway dashboard or deployment config:
+
+```env
+PGHOST=<railway-proxy-host>
+PGPORT=<railway-proxy-port>
+PGDATABASE=railway
+PGUSER=postgres
+PGPASSWORD=<your-password>
+```
+
+### Flyway Migrations
+
+Flyway runs automatically on every startup (`migrate-at-start=true`). Migration scripts are organized by database dialect:
+
+```
+backend/src/main/resources/db/migration/
+├── oracle/       ← used by the dev profile
+└── postgresql/   ← used by the ci and prod profiles
+```
+
