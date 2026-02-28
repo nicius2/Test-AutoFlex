@@ -89,16 +89,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
+          cache: "yarn"
+          cache-dependency-path: frontend/yarn.lock
 
       - name: Install frontend dependencies
         working-directory: frontend
-        run: npm ci
+        run: yarn --frozen-lockfile
 
       - name: Start Vite dev server
         working-directory: frontend
-        run: npm run dev &
+        run: yarn dev &
 
       - name: Wait for Vite dev server to be ready
         run: |
@@ -117,7 +117,7 @@ jobs:
       - name: Run Cypress E2E tests
         working-directory: frontend
         run: |
-          npx cypress run \
+          yarn cypress run \
             --config baseUrl=http://localhost:5173 \
             --env apiUrl=http://localhost:8080
 
