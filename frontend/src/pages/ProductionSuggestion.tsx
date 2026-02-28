@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Flex, Box, Text, Spinner, Callout, Badge, IconButton } from "@radix-ui/themes";
 import { ExclamationTriangleIcon, LightningBoltIcon, MixIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { getProductionSuggestion, type ProductionSuggestionItem, type ProductionSuggestionResponse } from "../api/productionSuggestion";
+import { getProductionSuggestion, type ProductionSuggestionItem } from "../api/productionSuggestion";
 import { getProducts, type Product } from "../api/products";
 import { getProductMaterials, removeProductMaterial } from "../api/productMaterials";
 import { ProductManufacturingModal } from "../components/ProductManufacturingModal";
