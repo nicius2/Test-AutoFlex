@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import { AppLayout } from "./__layout/AppLayout";
 import { Products } from "./pages/Products";
+import { RawMaterials } from "./pages/RawMaterials";
+import { ProductionSuggestion } from "./pages/ProductionSuggestion";
 
 export const router = createBrowserRouter([
    {
@@ -17,11 +19,11 @@ export const router = createBrowserRouter([
          },
          {
             path: "raw-materials",
-            element: <div className="text-gray-500">Raw Materials Page (Em breve)</div>
+            element: <RawMaterials />
          },
          {
-            path: "product-material",
-            element: <div className="text-gray-500">Product Material Page (Em breve)</div>
+            path: "suggestions",
+            element: <ProductionSuggestion />
          }
       ]
    }
