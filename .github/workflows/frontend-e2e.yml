@@ -98,6 +98,8 @@ jobs:
 
       - name: Start Vite dev server
         working-directory: frontend
+        env:
+          VITE_BASE_URL: http://localhost:8080
         run: yarn dev &
 
       - name: Wait for Vite dev server to be ready
