@@ -74,14 +74,16 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </Flex>
 
           {/* Close button — mobile only */}
-          <IconButton
-            variant="ghost" color="gray" radius="full"
-            className="md:hidden cursor-pointer"
-            onClick={onClose}
-            aria-label="Fechar menu"
-          >
-            <Cross2Icon width="16" height="16" />
-          </IconButton>
+          <div className="md:hidden flex items-center">
+            <IconButton
+              variant="ghost" color="gray" radius="full"
+              className="cursor-pointer"
+              onClick={onClose}
+              aria-label="Fechar menu"
+            >
+              <Cross2Icon width="16" height="16" />
+            </IconButton>
+          </div>
         </Flex>
 
         {/* Navigation */}
