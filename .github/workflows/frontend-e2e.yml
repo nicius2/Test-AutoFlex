@@ -16,6 +16,22 @@ jobs:
       checks: write
       pull-requests: read
 
+    # ── PostgreSQL service container ─────────────────────────────────────────
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: autoflex
+          POSTGRES_USER: autoflex
+          POSTGRES_PASSWORD: autoflex
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       # ── Checkout ─────────────────────────────────────────────────────────────
       - name: Checkout repository
@@ -29,10 +45,14 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Start Quarkus backend (dev mode)
+      - name: Start Quarkus backend (prod profile → PostgreSQL)
         working-directory: backend
-        # Run in background; Quarkus will listen on :8080
-        run: ./mvnw quarkus:dev -Dquarkus.http.port=8080 &
+        env:
+          DB_URL: jdbc:postgresql://localhost:5432/autoflex
+          DB_USERNAME: autoflex
+          DB_PASSWORD: autoflex
+          QUARKUS_PROFILE: prod
+        run: ./mvnw quarkus:dev -Dquarkus.profile=prod -Dquarkus.http.port=8080 &
 
       - name: Wait for backend to be ready
         run: |
@@ -61,7 +81,6 @@ jobs:
 
       - name: Start Vite dev server
         working-directory: frontend
-        # Vite listens on :5173 by default
         run: npm run dev &
 
       - name: Wait for Vite dev server to be ready
@@ -80,10 +99,6 @@ jobs:
       # ── Cypress ──────────────────────────────────────────────────────────────
       - name: Run Cypress E2E tests
         working-directory: frontend
-        env:
-          # Override cypress.env.json values via CLI env so the tests
-          # hit the backend running in CI
-          CYPRESS_apiUrl: "http://localhost:8080"
         run: |
           npx cypress run \
             --config baseUrl=http://localhost:5173 \
