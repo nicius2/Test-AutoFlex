@@ -45,26 +45,44 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Start Quarkus backend (ci profile → PostgreSQL)
+      - name: Build Quarkus backend (ci profile, skip tests)
         working-directory: backend
         env:
           DB_URL: jdbc:postgresql://localhost:5432/autoflex
           DB_USERNAME: autoflex
           DB_PASSWORD: autoflex
-        run: ./mvnw quarkus:run -Dquarkus.profile=ci -Dquarkus.http.port=8080 &
+        run: |
+          ./mvnw package -DskipTests -Dquarkus.profile=ci \
+            -Dquarkus.http.port=8080 --no-transfer-progress -q
+
+      - name: Run Quarkus backend JAR in background
+        working-directory: backend
+        env:
+          DB_URL: jdbc:postgresql://localhost:5432/autoflex
+          DB_USERNAME: autoflex
+          DB_PASSWORD: autoflex
+          QUARKUS_PROFILE: ci
+        run: |
+          java -jar target/quarkus-app/quarkus-run.jar \
+            -Dquarkus.http.port=8080 > /tmp/backend.log 2>&1 &
+          echo "Backend PID: $!"
 
       - name: Wait for backend to be ready
         run: |
           echo "Waiting for backend on port 8080..."
-          for i in $(seq 1 30); do
+          for i in $(seq 1 40); do
             if curl -sf http://localhost:8080/products > /dev/null 2>&1; then
               echo "Backend is ready!"
               exit 0
             fi
-            echo "  attempt $i/30 — sleeping 5s"
+            echo "  attempt $i/40 — sleeping 5s"
             sleep 5
           done
           echo "Backend did not become ready in time." && exit 1
+
+      - name: Show backend logs on failure
+        if: failure()
+        run: cat /tmp/backend.log || echo "(no log file)"
 
       # ── Frontend: Node + npm ──────────────────────────────────────────────────
       - name: Set up Node.js
