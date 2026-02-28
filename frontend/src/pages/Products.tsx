@@ -16,9 +16,10 @@ import {
      Pencil1Icon,
      TrashIcon,
      ExclamationTriangleIcon,
-     ReloadIcon,
      ArchiveIcon,
      CubeIcon,
+     LightningBoltIcon,
+     ReloadIcon
 } from "@radix-ui/react-icons";
 import {
      getProducts,
@@ -31,6 +32,7 @@ import {
 import { IdWithCopy } from "../components/IdWithCopy";
 import { ProductFormModal } from "../components/ProductFormModal";
 import { DeleteConfirmModal } from "../components/DeleteConfirm";
+import { ProductManufacturingModal } from "../components/ProductManufacturingModal";
 import { StatCard } from "../components/StatCard";
 
 export function Products() {
@@ -41,6 +43,9 @@ export function Products() {
 
      const [formOpen, setFormOpen] = useState(false);
      const [editTarget, setEditTarget] = useState<Product | null>(null);
+
+     const [materialsOpen, setMaterialsOpen] = useState(false);
+     const [materialsTarget, setMaterialsTarget] = useState<Product | null>(null);
 
      const [deleteOpen, setDeleteOpen] = useState(false);
      const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
@@ -80,6 +85,11 @@ export function Products() {
      function openEdit(product: Product) {
           setEditTarget(product);
           setFormOpen(true);
+     }
+
+     function openMaterials(product: Product) {
+          setMaterialsTarget(product);
+          setMaterialsOpen(true);
      }
 
      function openDelete(product: Product) {
@@ -255,6 +265,14 @@ export function Products() {
                                                   <td className="px-5 py-3.5">
                                                        <Flex justify="center" gap="1">
                                                             <IconButton
+                                                                 size="1" variant="ghost" color="indigo"
+                                                                 className="cursor-pointer"
+                                                                 title="Fabricar / Receita"
+                                                                 onClick={() => openMaterials(product)}
+                                                            >
+                                                                 <LightningBoltIcon />
+                                                            </IconButton>
+                                                            <IconButton
                                                                  size="1" variant="ghost" color="gray"
                                                                  className="cursor-pointer"
                                                                  title="Editar"
@@ -286,6 +304,12 @@ export function Products() {
                     onClose={() => setFormOpen(false)}
                     onSave={handleSave}
                     initial={editTarget}
+               />
+
+               <ProductManufacturingModal
+                    open={materialsOpen}
+                    product={materialsTarget}
+                    onClose={() => setMaterialsOpen(false)}
                />
 
                <DeleteConfirmModal

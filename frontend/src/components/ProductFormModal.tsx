@@ -70,6 +70,7 @@ export function ProductFormModal({ open, onClose, onSave, initial }: ProductForm
                                         Nome do Produto
                                    </Text>
                                    <TextField.Root
+                                        name="name"
                                         placeholder="Ex: Óleo de Motor 5W-30"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
@@ -81,6 +82,7 @@ export function ProductFormModal({ open, onClose, onSave, initial }: ProductForm
                                         Valor (R$)
                                    </Text>
                                    <TextField.Root
+                                        name="price"
                                         type="number"
                                         min="0"
                                         step="0.01"
