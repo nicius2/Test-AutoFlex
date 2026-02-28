@@ -1,5 +1,6 @@
 # Backend
 target/
+backend/.env
 
 # Frontend
 frontend/node_modules/

@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Active nav item — needs a CSS class because NavLink conditionally adds 'active' */
+.nav-link.active .nav-item {
+  @apply bg-indigo-100 text-indigo-700 font-medium;
+}
