@@ -119,7 +119,7 @@ export function RawMaterials() {
                </Flex>
 
                {/* ─── Stats ─── */}
-               <Flex gap="4" wrap="wrap">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <StatCard
                          label="Total de Tipos"
                          value={rawMaterials.length}
@@ -134,7 +134,7 @@ export function RawMaterials() {
                          iconBg="bg-emerald-50"
                          sub="unidades disponíveis"
                     />
-               </Flex>
+               </div>
 
                {/* ─── Error Banner ─── */}
                {error && (
@@ -159,7 +159,7 @@ export function RawMaterials() {
                               placeholder="Buscar por nome ou ID..."
                               value={search}
                               onChange={(e) => setSearch(e.target.value)}
-                              className="w-72"
+                              className="w-full sm:w-72"
                          >
                               <TextField.Slot>
                                    <MagnifyingGlassIcon className="text-gray-400" />

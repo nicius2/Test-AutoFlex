@@ -79,7 +79,7 @@ export function ProductionSuggestion() {
 
      return (
           <Box className="w-full">
-               <Flex justify="between" align="center" mb="6">
+               <Flex justify="between" align="start" wrap="wrap" gap="3" mb="6">
                     <Box>
                          <Text as="div" size="6" weight="bold" className="text-gray-900 tracking-tight">
                               Sugestão de Produção
@@ -88,7 +88,7 @@ export function ProductionSuggestion() {
                               Estimativas baseadas no estoque atual de matérias-primas
                          </Text>
                     </Box>
-                    <Flex gap="3">
+                    <Flex gap="3" wrap="wrap">
                          <button
                               onClick={() => { setMaterialsTarget(null); setMaterialsOpen(true); }}
                               className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 font-medium transition-colors cursor-pointer"
@@ -132,7 +132,7 @@ export function ProductionSuggestion() {
                     </Flex>
                )}
 
-               <Box className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+               <Box className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
                     <table className="w-full text-sm">
                          <thead>
                               <tr className="bg-gray-50/50 text-left border-b border-gray-100">

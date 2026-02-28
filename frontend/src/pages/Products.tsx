@@ -119,7 +119,7 @@ export function Products() {
      return (
           <Flex direction="column" gap="6">
                {/* ─── Header ─── */}
-               <Flex justify="between" align="center" wrap="wrap" gap="3">
+               <Flex justify="between" align="start" wrap="wrap" gap="3">
                     <Box>
                          <Text as="div" size="6" weight="bold" className="text-gray-900">
                               Produtos
@@ -134,7 +134,7 @@ export function Products() {
                </Flex>
 
                {/* ─── Stats ─── */}
-               <Flex gap="4" wrap="wrap">
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <StatCard
                          label="Total de Produtos"
                          value={products.length}
@@ -156,7 +156,7 @@ export function Products() {
                          iconBg="bg-amber-50"
                          sub="por produto"
                     />
-               </Flex>
+               </div>
 
                {/* ─── Error Banner ─── */}
                {error && (
@@ -181,7 +181,7 @@ export function Products() {
                               placeholder="Buscar por nome ou ID..."
                               value={search}
                               onChange={(e) => setSearch(e.target.value)}
-                              className="w-72"
+                              className="w-full sm:w-72"
                          >
                               <TextField.Slot>
                                    <MagnifyingGlassIcon className="text-gray-400" />
