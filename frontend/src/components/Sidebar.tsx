@@ -1,10 +1,10 @@
 import { NavLink } from "react-router";
 import { Flex, Box, Text, Avatar, IconButton } from "@radix-ui/themes";
 import {
-  ArchiveIcon,
   LayersIcon,
-  MixIcon,
+  CubeIcon,
   ExitIcon,
+  MagicWandIcon,
 } from "@radix-ui/react-icons";
 import userImage from "../assets/perfil.png";
 
@@ -26,9 +26,9 @@ function CarIcon(props: React.SVGProps<SVGSVGElement>) {
 // Nav Items 
 
 const navItems = [
-  { path: "/products", label: "Product", icon: ArchiveIcon },
+  { path: "/products", label: "Product", icon: CubeIcon },
   { path: "/raw-materials", label: "Raw Material", icon: LayersIcon },
-  { path: "/product-material", label: "Product Material", icon: MixIcon },
+  { path: "/suggestions", label: "Production Suggestion", icon: MagicWandIcon },
 ];
 
 // Component 
